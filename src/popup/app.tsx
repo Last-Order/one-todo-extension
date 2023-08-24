@@ -6,6 +6,7 @@ import { Storage } from "@plasmohq/storage";
 
 import Login from "./pages/login";
 import LoginCallback from "./pages/login_callback";
+import Upcoming from "./pages/upcoming";
 
 const storage = new Storage({
     copiedKeyList: ["jwt_token"],
@@ -27,7 +28,13 @@ const loginCallbackRoute = new Route({
     component: LoginCallback,
 });
 
-const routeTree = rootRoute.addChildren([loginRoute, loginCallbackRoute]);
+const upcomingRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: "/upcoming",
+    component: Upcoming,
+});
+
+const routeTree = rootRoute.addChildren([loginRoute, loginCallbackRoute, upcomingRoute]);
 
 const hashHistory = createHashHistory();
 
@@ -47,7 +54,7 @@ function App() {
             if (!token && location.hash === "#/") {
                 navigate({ to: "/login" });
             } else {
-                console.log("get token:", token);
+                navigate({ to: "/upcoming" });
             }
         })();
     }, [navigate, router]);
@@ -57,7 +64,7 @@ function App() {
             <Box
                 sx={{
                     minWidth: "400px",
-                    minHeight: "400px",
+                    minHeight: "450px",
                 }}
             >
                 <Outlet />
