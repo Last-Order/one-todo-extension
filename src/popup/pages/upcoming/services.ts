@@ -1,14 +1,16 @@
 import request from "~popup/utils/request";
-
-export interface TodoEvent {
-    title: string;
-    description: string;
-    scheduled_time: string;
-    remind_time: string;
-}
+import dayjs from "dayjs";
+import type { TodoEvent, TodoStatus } from "./types";
 
 export const getUpcomingEvents = async () => {
     return await request.get<TodoEvent[]>("/upcoming", {
-        current_time: new Date().toISOString(),
+        current_time: dayjs().format(),
+    });
+};
+
+export const updateEventStatus = async (eventId: number, status: TodoStatus) => {
+    return await request.post("/update_event_status", {
+        id: eventId,
+        status,
     });
 };

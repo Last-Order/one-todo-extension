@@ -1,0 +1,62 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 8px 12px 0;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-left: 5px solid rgb(25, 118, 210);
+    min-height: 80px;
+    &:first-child {
+        margin-top: 0;
+    }
+
+    .eventName,
+    .description {
+        transition: opacity 0.3s;
+    }
+
+    &.done {
+        .eventName,
+        .description {
+            text-decoration: line-through;
+            font-style: italic;
+            opacity: 0.7;
+        }
+    }
+}
+
+.top {
+    padding: 6px 8px 6px 10px;
+}
+
+.eventName {
+}
+
+.description {
+    margin-top: 4px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.divider {
+    margin: 6px 8px;
+    height: 1px;
+    width: -webkit-fill-available;
+    background-color: rgba(0, 0, 0, 0.08);
+    transform: scaleY(0.5);
+}
+
+.bottom {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px 8px;
+}
+
+.time {
+    flex-grow: 1;
+}

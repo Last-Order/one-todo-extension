@@ -4,8 +4,9 @@ import { groupBy } from "lodash";
 import React, { useMemo } from "react";
 import useSWR from "swr";
 import CreateEventButton from "./CreateEventButton";
+import EventCard from "./EventCard";
 import { getUpcomingEvents } from "./services";
-import type { TodoEvent } from "./services";
+import type { TodoEvent } from "./types";
 
 const Upcoming: React.FC = () => {
     const { data: events, isLoading } = useSWR("upcoming_events", getUpcomingEvents);
@@ -31,17 +32,26 @@ const Upcoming: React.FC = () => {
                 </Toolbar>
             </AppBar>
             <Stack sx={{ marginTop: "48px" }}>
-                {groupedEvents.map((group) => {
+                {groupedEvents.map((group, index) => {
                     return (
                         <List
+                            key={index}
                             subheader={
                                 <>
-                                    <ListSubheader>{dayjs(group.date).toDate().toLocaleDateString()}</ListSubheader>
+                                    <ListSubheader>
+                                        <Typography sx={{ margin: "4px 0" }}>
+                                            {dayjs(group.date).toDate().toLocaleDateString()}
+                                        </Typography>
+                                    </ListSubheader>
                                 </>
                             }
                         >
                             {group.events.map((event) => {
-                                return <ListItemButton>{event.title}</ListItemButton>;
+                                return (
+                                    <>
+                                        <EventCard event={event} key={event.id} />
+                                    </>
+                                );
                             })}
                         </List>
                     );

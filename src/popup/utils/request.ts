@@ -86,15 +86,15 @@ class Request {
             if (e.request.response) {
                 try {
                     const error = JSON.parse(e.request.responseText);
-                    return new RequestError(error.error.code, error.error.info);
+                    return new RequestError(error.error.code, error.error.message);
                 } catch (e) {
                     // Fail to parse response, do nothing
                 }
             }
             if (e.request.status) {
-                return new RequestError("network_error", `网络错误: ${e.request.status} ${e.request.statusText}`);
+                return new RequestError("network_error", `Network Error: ${e.request.status} ${e.request.statusText}`);
             }
-            return new RequestError("unknown_error", "未知错误");
+            return new RequestError("unknown_error", "Unknown Error");
         }
     }
 }
