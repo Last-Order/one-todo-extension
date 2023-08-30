@@ -1,9 +1,11 @@
 import { Box, CssBaseline } from "@mui/material";
-import { createHashHistory, Outlet, RootRoute, Route, Router, useNavigate, useRouter } from "@tanstack/react-router";
-import { useEffect } from "react";
-
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Storage } from "@plasmohq/storage";
-
+import { createHashHistory, Outlet, RootRoute, Route, Router, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { RecoilRoot } from "recoil";
+import GlobalMessage from "./components/GlobalMessage";
 import Login from "./pages/login";
 import LoginCallback from "./pages/login_callback";
 import Upcoming from "./pages/upcoming";
@@ -59,17 +61,20 @@ function App() {
         })();
     }, [navigate, router]);
     return (
-        <>
-            <CssBaseline />
-            <Box
-                sx={{
-                    minWidth: "400px",
-                    minHeight: "450px",
-                }}
-            >
-                <Outlet />
-            </Box>
-        </>
+        <RecoilRoot>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <CssBaseline />
+                <GlobalMessage />
+                <Box
+                    sx={{
+                        minWidth: "450px",
+                        minHeight: "520px",
+                    }}
+                >
+                    <Outlet />
+                </Box>
+            </LocalizationProvider>
+        </RecoilRoot>
     );
 }
 

@@ -1,10 +1,11 @@
-import { AppBar, Box, List, ListItemButton, ListSubheader, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, CircularProgress, List, ListSubheader, Stack, Toolbar, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import { groupBy } from "lodash";
 import React, { useMemo } from "react";
 import useSWR from "swr";
 import CreateEventButton from "./CreateEventButton";
 import EventCard from "./EventCard";
+import styles from "./index.module.scss";
 import { getUpcomingEvents } from "./services";
 import type { TodoEvent } from "./types";
 
@@ -31,6 +32,11 @@ const Upcoming: React.FC = () => {
                     </Typography>
                 </Toolbar>
             </AppBar>
+            {isLoading && (
+                <div className={styles.loadingContainer}>
+                    <CircularProgress />
+                </div>
+            )}
             <Stack sx={{ marginTop: "48px" }}>
                 {groupedEvents.map((group, index) => {
                     return (
@@ -47,11 +53,7 @@ const Upcoming: React.FC = () => {
                             }
                         >
                             {group.events.map((event) => {
-                                return (
-                                    <>
-                                        <EventCard event={event} key={event.id} />
-                                    </>
-                                );
+                                return <EventCard event={event} key={event.id} />;
                             })}
                         </List>
                     );

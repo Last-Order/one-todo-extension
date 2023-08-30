@@ -1,3 +1,12 @@
 .title {
     font-size: 16px;
 }
+
+.loadingContainer {
+    width: 100vw;
+    height: calc(100vh - 48px);
+    padding-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

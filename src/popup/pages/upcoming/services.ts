@@ -14,3 +14,33 @@ export const updateEventStatus = async (eventId: number, status: TodoStatus) => 
         status,
     });
 };
+
+export interface PrepareCreateEventResult {
+    event_name: string;
+    scheduled_time: string;
+    description?: string;
+}
+
+export const prepareCreateEvent = async (description: string) => {
+    return await request.post<PrepareCreateEventResult>("/prepare_create_event", {
+        current_time: dayjs().format(),
+        description,
+    });
+};
+
+export interface CreateEventPayload {
+    eventName: string;
+    scheduledTime: string;
+    remindTime: string;
+    description: string;
+}
+
+export const createEvent = async (params: CreateEventPayload) => {
+    const { eventName, scheduledTime, remindTime, description } = params;
+    return await request.post<TodoEvent>("/create_event", {
+        event_name: eventName,
+        description,
+        scheduled_time: scheduledTime,
+        remind_time: remindTime,
+    });
+};
