@@ -3,12 +3,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { Storage } from "@plasmohq/storage";
 import { createHashHistory, Outlet, RootRoute, Route, Router, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { RecoilRoot } from "recoil";
 import GlobalMessage from "./components/GlobalMessage";
 import Login from "./pages/login";
 import LoginCallback from "./pages/login_callback";
 import Upcoming from "./pages/upcoming";
+import auth from "./utils/auth";
 
 const storage = new Storage({
     copiedKeyList: ["jwt_token"],
@@ -49,11 +50,19 @@ declare module "@tanstack/react-router" {
 }
 
 function App() {
+    const isInited = useRef(false);
     const navigate = useNavigate({ from: "/" });
     useEffect(() => {
+        if (isInited.current) {
+            return;
+        }
+        isInited.current = true;
         (async () => {
             const token = await storage.get("jwt_token");
-            if (!token && location.hash === "#/") {
+            if (location.hash !== "#/") {
+                return;
+            }
+            if (!token) {
                 navigate({ to: "/login" });
             } else {
                 navigate({ to: "/upcoming" });

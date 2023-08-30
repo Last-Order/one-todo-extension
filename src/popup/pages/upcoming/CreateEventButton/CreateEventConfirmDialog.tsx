@@ -4,6 +4,7 @@ import { DateTimeField } from "@mui/x-date-pickers/DateTimeField";
 import useMessage from "~popup/hooks/useMessage";
 import dayjs from "dayjs";
 import React, { useRef, useState } from "react";
+import { useSWRConfig } from "swr";
 import { createEvent, type PrepareCreateEventResult } from "../services";
 import styles from "./index.module.scss";
 
@@ -21,6 +22,7 @@ const CreateEventConfirmDialog: React.FC<Props> = (props) => {
     const [localDescription, setLocalDescription] = useState(description);
     const [isLoading, setIsLoading] = useState(false);
     const [_, { addMessage }] = useMessage();
+    const { mutate } = useSWRConfig();
     const requestLock = useRef(false);
 
     const onConfirm = async () => {
@@ -41,6 +43,7 @@ const CreateEventConfirmDialog: React.FC<Props> = (props) => {
                 remindTime: remindTime.format(),
                 description: localDescription,
             });
+            mutate("upcoming_events");
             onCreated && onCreated();
         } catch (e) {
             if (e instanceof Error) {
