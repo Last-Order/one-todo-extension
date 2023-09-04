@@ -1,4 +1,14 @@
-import { AppBar, Box, CircularProgress, List, ListSubheader, Stack, Toolbar, Typography } from "@mui/material";
+import {
+    AppBar,
+    Box,
+    CircularProgress,
+    Container,
+    List,
+    ListSubheader,
+    Stack,
+    Toolbar,
+    Typography,
+} from "@mui/material";
 import dayjs from "dayjs";
 import { groupBy } from "lodash";
 import React, { useMemo } from "react";
@@ -8,6 +18,7 @@ import EventCard from "./EventCard";
 import styles from "./index.module.scss";
 import { getUpcomingEvents } from "./services";
 import type { TodoEvent } from "./types";
+import UserProfile from "./UserProfile";
 
 const Upcoming: React.FC = () => {
     const { data: events, isLoading } = useSWR("upcoming_events", getUpcomingEvents);
@@ -25,13 +36,20 @@ const Upcoming: React.FC = () => {
     }, [events]);
     return (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
-            <AppBar component="nav" variant="outlined">
-                <Toolbar variant="dense">
-                    <Typography variant="h6" color="inherit" component="div">
-                        Upcoming Events
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <Container>
+                <AppBar component="nav" variant="outlined">
+                    <Toolbar variant="dense">
+                        <Box sx={{ flexGrow: 1 }}>
+                            <Typography variant="h6" color="inherit" component="div">
+                                Upcoming Events
+                            </Typography>
+                        </Box>
+                        <Box>
+                            <UserProfile />
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+            </Container>
             {isLoading && (
                 <div className={styles.loadingContainer}>
                     <CircularProgress />
@@ -42,6 +60,7 @@ const Upcoming: React.FC = () => {
                     return (
                         <List
                             key={index}
+                            className={styles.eventList}
                             subheader={
                                 <>
                                     <ListSubheader>

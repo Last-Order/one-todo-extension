@@ -19,7 +19,7 @@ const EventCard: React.FC<Props> = (props) => {
     const [localStatus, setLocalStatus] = useState<TodoStatus>(status);
 
     const parsedScheduledTime = useMemo(() => {
-        return dayjs(scheduled_time).format("HH:MM");
+        return dayjs(scheduled_time).format("HH:mm");
     }, [scheduled_time]);
 
     const onCheckClick = async () => {
@@ -33,7 +33,7 @@ const EventCard: React.FC<Props> = (props) => {
             await updateEventStatus(id, prevStatus === TodoStatus.CREATED ? TodoStatus.DONE : TodoStatus.CREATED);
         } catch (e) {
             if (e instanceof Error) {
-                console.log(e.message)
+                console.log(e.message);
             }
             // rollback
             setLocalStatus(prevStatus);

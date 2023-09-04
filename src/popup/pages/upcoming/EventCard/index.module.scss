@@ -28,10 +28,15 @@
 }
 
 .top {
+    width: 100%;
     padding: 6px 8px 6px 10px;
 }
 
 .eventName {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .description {

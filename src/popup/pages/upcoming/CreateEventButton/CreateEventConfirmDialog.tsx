@@ -11,11 +11,12 @@ import styles from "./index.module.scss";
 interface Props {
     open: boolean;
     prepareResult: PrepareCreateEventResult;
+    onClose: () => void;
     onCreated?: () => void;
 }
 
 const CreateEventConfirmDialog: React.FC<Props> = (props) => {
-    const { open, prepareResult, onCreated } = props;
+    const { open, prepareResult, onClose, onCreated } = props;
     const { event_name: eventName, scheduled_time: scheduledTime, description } = prepareResult || {};
     const [localEventName, setLocalEventName] = useState(eventName);
     const [localScheduledTime, setLocalScheduledTime] = useState(dayjs(scheduledTime));
@@ -56,7 +57,7 @@ const CreateEventConfirmDialog: React.FC<Props> = (props) => {
     };
 
     return (
-        <Dialog open={open} maxWidth="sm" fullWidth>
+        <Dialog open={open} maxWidth="sm" fullWidth onClose={onClose}>
             <DialogTitle>Confirm Event</DialogTitle>
             <DialogContent>
                 <div className={styles.form}>

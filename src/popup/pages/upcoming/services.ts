@@ -44,3 +44,17 @@ export const createEvent = async (params: CreateEventPayload) => {
         remind_time: remindTime,
     });
 };
+
+export interface UserProfileResponse {
+    first_name: string;
+    last_name: string;
+    avatar: string;
+    subscription: {
+        quota: number;
+        used_count: number;
+    };
+}
+
+export const getUserProfile = async () => {
+    return await request.get<UserProfileResponse>("/user/profile", {});
+};

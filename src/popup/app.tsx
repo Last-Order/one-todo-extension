@@ -77,6 +77,7 @@ function App() {
                 <Box
                     sx={{
                         minWidth: "450px",
+                        maxWidth: "450px",
                         minHeight: "520px",
                     }}
                 >

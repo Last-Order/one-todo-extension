@@ -8,10 +8,11 @@ import styles from "./index.module.scss";
 
 interface Props {
     open: boolean;
+    onClose: () => void;
 }
 
 const CreateEventDialog: React.FC<Props> = (props) => {
-    const { open } = props;
+    const { open, onClose } = props;
     const requestLock = useRef(false);
     const [description, setDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +29,7 @@ const CreateEventDialog: React.FC<Props> = (props) => {
         try {
             const result = await prepareCreateEvent(description);
             setPrepareResult({ ...result, description });
+            setIsShowCreateEventConfirmDialog(true);
         } catch (e) {
             if (e instanceof Error) {
                 addMessage("error", e.message);
@@ -39,7 +41,7 @@ const CreateEventDialog: React.FC<Props> = (props) => {
     };
 
     return (
-        <Dialog open={open} maxWidth="sm" fullWidth>
+        <Dialog open={open} maxWidth="sm" fullWidth onClose={onClose}>
             <DialogTitle>Create Event</DialogTitle>
             <DialogContent>
                 <div className={styles.form}>
@@ -57,6 +59,14 @@ const CreateEventDialog: React.FC<Props> = (props) => {
                     key={JSON.stringify(prepareResult)}
                     open={isShowCreateEventConfirmDialog}
                     prepareResult={prepareResult}
+                    onClose={() => {
+                        setIsShowCreateEventConfirmDialog(false);
+                    }}
+                    onCreated={() => {
+                        setIsShowCreateEventConfirmDialog(false);
+                        addMessage("success", "Event added.");
+                        onClose();
+                    }}
                 />
             </DialogContent>
             <DialogActions>

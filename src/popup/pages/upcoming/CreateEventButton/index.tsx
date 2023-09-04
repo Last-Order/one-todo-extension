@@ -24,7 +24,12 @@ const CreateEventButton: React.FC = () => {
             >
                 <AddIcon></AddIcon>
             </IconButton>
-            <CreateEventDialog open={isShowCreateEventDialog}></CreateEventDialog>
+            <CreateEventDialog
+                open={isShowCreateEventDialog}
+                onClose={() => {
+                    setIsShowCreateEventDialog(false);
+                }}
+            ></CreateEventDialog>
         </div>
     );
 };

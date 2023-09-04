@@ -10,3 +10,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.eventList {
+    &:last-child {
+        margin-bottom: 60px;
+    }
+}

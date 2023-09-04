@@ -77,16 +77,16 @@ class Request {
 
     parseError(e: AxiosError | AxiosResponse): RequestError {
         if (isAxiosResponse(e)) {
-            if (e.data.name === "need_login") {
+            if (e.data.code === "need_login") {
                 // 登录失效
                 auth.logout();
             }
-            return new RequestError(e.data.name, e.data.message);
+            return new RequestError(e.data.code, e.data.message);
         } else {
             if (e.request.response) {
                 try {
                     const error = JSON.parse(e.request.responseText);
-                    return new RequestError(error.error.code, error.error.message);
+                    return new RequestError(error.code, error.message);
                 } catch (e) {
                     // Fail to parse response, do nothing
                 }
