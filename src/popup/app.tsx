@@ -5,11 +5,11 @@ import { Storage } from "@plasmohq/storage";
 import { createHashHistory, Outlet, RootRoute, Route, Router, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { RecoilRoot } from "recoil";
+import auth from "../utils/auth";
 import GlobalMessage from "./components/GlobalMessage";
 import Login from "./pages/login";
 import LoginCallback from "./pages/login_callback";
 import Upcoming from "./pages/upcoming";
-import auth from "./utils/auth";
 
 const storage = new Storage({
     copiedKeyList: ["jwt_token"],
@@ -77,7 +77,6 @@ function App() {
                 <Box
                     sx={{
                         minWidth: "450px",
-                        maxWidth: "450px",
                         minHeight: "520px",
                     }}
                 >

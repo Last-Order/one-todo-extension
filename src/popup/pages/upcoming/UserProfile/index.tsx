@@ -1,4 +1,4 @@
-import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
     Avatar,
     Box,
@@ -6,12 +6,16 @@ import {
     Icon,
     IconButton,
     LinearProgress,
+    ListItemIcon,
+    ListItemText,
     Menu,
     MenuItem,
     MenuList,
     Tooltip,
     Typography,
 } from "@mui/material";
+import { useNavigate } from "@tanstack/react-router";
+import auth from "~utils/auth";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { getUserProfile } from "../services";
@@ -24,6 +28,7 @@ const UserProfile: React.FC = () => {
     const { avatar, last_name: lastName, first_name: firstName, subscription } = data || {};
     const { quota, used_count: usedCount } = subscription || {};
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const navigate = useNavigate();
 
     const ratio = (() => {
         if (!quota || !usedCount) {
@@ -38,6 +43,11 @@ const UserProfile: React.FC = () => {
 
     const onMenuClose = () => {
         setAnchorElUser(null);
+    };
+
+    const onLogout = async () => {
+        await auth.logout();
+        navigate({ to: "/login" });
     };
 
     return (
@@ -88,13 +98,15 @@ const UserProfile: React.FC = () => {
                                     {usedCount} / {quota}
                                 </Typography>
                             </Box>
-                            {/* <Box sx={{ minWidth: "22px", fontSize: "smaller" }}>
-                                {quota - usedCount < 5 && !!ratio ? `${quota - usedCount} Left` : `${ratio} %`}
-                            </Box> */}
                         </Box>
                     </MenuItem>
                     <Divider />
-                    <MenuItem>Logout</MenuItem>
+                    <MenuItem onClick={onLogout}>
+                        <ListItemIcon>
+                            <LogoutIcon />
+                        </ListItemIcon>
+                        <ListItemText>Logout</ListItemText>
+                    </MenuItem>
                 </MenuList>
             </Menu>
         </div>

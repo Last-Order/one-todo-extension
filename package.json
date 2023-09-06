@@ -38,11 +38,14 @@
         "typescript": "5.1.6"
     },
     "manifest": {
+        "key": "$CRX_KEY",
         "host_permissions": [
             "https://*/*"
         ],
         "permissions": [
-            "contextMenus"
+            "contextMenus",
+            "scripting",
+            "activeTab"
         ],
         "web_accessible_resources": [
             {

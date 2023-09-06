@@ -1,3 +1,5 @@
+import injectedCode from "~inject/index";
+
 export {};
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -11,7 +13,8 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 chrome.contextMenus.onClicked.addListener((item, tab) => {
     const { selectionText } = item;
-    if (!selectionText) {
+    if (!selectionText || !tab.id) {
         return;
     }
+    chrome.tabs.sendMessage(tab.id, { type: "create", text: selectionText });
 });

@@ -1,4 +1,4 @@
-import request from "~popup/utils/request";
+import request from "~utils/request";
 import dayjs from "dayjs";
 import type { TodoEvent, TodoStatus } from "./types";
 
