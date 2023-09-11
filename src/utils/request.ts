@@ -1,9 +1,4 @@
-import axios, { AxiosError, type AxiosInstance, type AxiosRequestConfig, type AxiosResponse } from "axios";
 import auth from "./auth";
-
-const isAxiosResponse = (e: AxiosError | AxiosResponse): e is AxiosResponse => {
-    return !!(e as AxiosResponse).status;
-};
 
 export class RequestError extends Error {
     constructor(name: string, message: string) {
@@ -13,47 +8,50 @@ export class RequestError extends Error {
 }
 
 class Request {
-    instance: AxiosInstance;
+    baseUrl: string;
 
     constructor() {
-        this.instance = axios.create({
-            baseURL: process.env.PLASMO_PUBLIC_API_BASE,
-        });
+        this.baseUrl = process.env.PLASMO_PUBLIC_API_BASE;
     }
 
     request<T>(
         method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
         path: string = "/",
-        payload: object = {},
+        payload: Record<string, string> = {},
     ): Promise<T> {
         console.log(`[${new Date().toISOString()}] ${method} ${path}`);
-        const options: AxiosRequestConfig = {
+
+        let url = `${this.baseUrl}${path}`;
+
+        const options: RequestInit = {
             method: method,
-            url: path,
-            params: {},
-            data: {},
+            mode: "cors",
         };
-        if (method === "GET") {
-            options.params = payload;
+        if (method === "GET" && Object.keys(payload).length > 0) {
+            url += `?${new URLSearchParams(payload).toString()}`;
         }
         if (method === "POST") {
-            options.data = payload;
+            options.headers = {
+                "Content-Type": "application/json",
+            };
+            options.body = JSON.stringify(payload);
         }
         return new Promise(async (resolve, reject) => {
             if (await auth.isLogin()) {
                 options.headers = {
+                    ...(options.headers || {}),
                     Authorization: `Bearer ${await auth.getToken()}`,
                 };
             }
             try {
-                const response = await this.instance.request(options);
-                if (response.status === 200) {
-                    resolve(response.data as T);
+                const response = await fetch(url, options);
+                if (response?.ok) {
+                    resolve((await response.json()) as T);
                 } else {
-                    reject(this.parseError(response));
+                    reject(await this.parseErrorResponse(response));
                 }
             } catch (e) {
-                reject(this.parseError(e));
+                reject(new RequestError("network_error", `${e.status} ${e.statusText}`));
             }
         });
     }
@@ -75,26 +73,21 @@ class Request {
         return this.request<T>("POST", path, payload);
     }
 
-    parseError(e: AxiosError | AxiosResponse): RequestError {
-        if (isAxiosResponse(e)) {
-            if (e.data.code === "need_login") {
+    async parseErrorResponse(e: Response): Promise<RequestError> {
+        try {
+            const errorBody = await e.json();
+            if (errorBody.code === "need_login") {
                 // 登录失效
                 auth.logout();
+                return;
             }
-            return new RequestError(e.data.code, e.data.message);
-        } else {
-            if (e.request.response) {
-                try {
-                    const error = JSON.parse(e.request.responseText);
-                    return new RequestError(error.code, error.message);
-                } catch (e) {
-                    // Fail to parse response, do nothing
-                }
+            if (errorBody.code && errorBody.message) {
+                return new RequestError(errorBody.code, errorBody.message);
+            } else {
+                return new RequestError("unknown_error", "Please try again");
             }
-            if (e.request.status) {
-                return new RequestError("network_error", `Network Error: ${e.request.status} ${e.request.statusText}`);
-            }
-            return new RequestError("unknown_error", "Unknown Error");
+        } catch (e) {
+            return new RequestError("unknown_error_parsing", "Please try again");
         }
     }
 }

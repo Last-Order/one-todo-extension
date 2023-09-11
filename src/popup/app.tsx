@@ -5,7 +5,6 @@ import { Storage } from "@plasmohq/storage";
 import { createHashHistory, Outlet, RootRoute, Route, Router, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { RecoilRoot } from "recoil";
-import auth from "../utils/auth";
 import GlobalMessage from "./components/GlobalMessage";
 import Login from "./pages/login";
 import LoginCallback from "./pages/login_callback";

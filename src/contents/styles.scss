@@ -4,24 +4,21 @@
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
     width: 400px;
-    height: 250px;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 4px;
-    box-shadow:
-        0px 11px 15px -7px rgba(0, 0, 0, 0.2),
-        0px 24px 38px 3px rgba(0, 0, 0, 0.14),
-        0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+
+    box-sizing: border-box;
+
+    transition:
+        height 0.3s,
+        width 0.3s;
+
+    &.error {
+        height: auto;
+    }
 }
 
 .close-btn {
-    position: absolute;
     right: 6px;
     top: 6px;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-
     &:hover {
         opacity: 0.8;
     }
@@ -32,6 +29,7 @@
 .loading-container {
     width: 100%;
     height: 100%;
+    min-height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -133,3 +131,25 @@
 }
 
 // loading end
+
+.event-detail {
+    margin-top: 8px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-title {
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: bold;
+
+    &:first-child {
+        margin-top: 0;
+    }
+}
+
+.section-content {
+    margin-top: 12px;
+    font-size: 14px;
+}
