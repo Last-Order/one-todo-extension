@@ -7,3 +7,12 @@
 .action {
     text-align: right;
 }
+
+.subscription {
+    display: flex;
+}
+
+.subscriptionName {
+    flex-grow: 1;
+    text-align: left;
+}

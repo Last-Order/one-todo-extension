@@ -49,9 +49,15 @@ export interface UserProfileResponse {
     first_name: string;
     last_name: string;
     avatar: string;
-    subscription: {
+    quota_info: {
         quota: number;
         used_count: number;
+    };
+    subscription: {
+        start_time: string;
+        end_time: string;
+        subscription_name: string;
+        subscription_type: number;
     };
 }
 

@@ -25,8 +25,9 @@ const DEFAULT_AVATAR_URL = "https://www.gravatar.com/avatar/00000000000000000000
 
 const UserProfile: React.FC = () => {
     const { data } = useSWR("user_profile", getUserProfile);
-    const { avatar, last_name: lastName, first_name: firstName, subscription } = data || {};
-    const { quota, used_count: usedCount } = subscription || {};
+    const { avatar, last_name: lastName, first_name: firstName, subscription, quota_info: quotaInfo } = data || {};
+    const { quota, used_count: usedCount } = quotaInfo || {};
+    const { subscription_name: subscriptionName } = subscription || {};
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
 
@@ -81,7 +82,7 @@ const UserProfile: React.FC = () => {
                 }}
                 disableScrollLock={true}
             >
-                <MenuList dense>
+                <MenuList dense sx={{ paddingTop: "0" }}>
                     <MenuItem>
                         <div className={styles.name}>
                             {firstName}
@@ -94,9 +95,18 @@ const UserProfile: React.FC = () => {
                                 <LinearProgress variant="determinate" value={ratio} />
                             </Box>
                             <Box sx={{ marginTop: "6px", textAlign: "right", width: "100%" }}>
-                                <Typography color="text.secondary" fontSize={12}>
-                                    {usedCount} / {quota}
-                                </Typography>
+                                <div className={styles.subscription}>
+                                    <div className={styles.subscriptionName}>
+                                        <Typography color="text.secondary" fontSize={12}>
+                                            {subscriptionName}
+                                        </Typography>
+                                    </div>
+                                    <div className={styles.quota}>
+                                        <Typography color="text.secondary" fontSize={12}>
+                                            {usedCount} / {quota}
+                                        </Typography>
+                                    </div>
+                                </div>
                             </Box>
                         </Box>
                     </MenuItem>
