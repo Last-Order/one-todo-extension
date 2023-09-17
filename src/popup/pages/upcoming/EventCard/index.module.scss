@@ -32,8 +32,13 @@
     padding: 6px 8px 6px 10px;
 }
 
+.topLine {
+    display: flex;
+    align-items: center;
+}
+
 .eventName {
-    max-width: 100%;
+    flex-grow: 1;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -64,4 +69,8 @@
 
 .time {
     flex-grow: 1;
+}
+
+.form {
+    padding: 8px 0;
 }

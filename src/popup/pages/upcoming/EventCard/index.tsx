@@ -1,11 +1,13 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { IconButton, Typography } from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { IconButton, Menu, MenuItem, MenuList, Typography } from "@mui/material";
 import classnames from "classnames";
 import dayjs from "dayjs";
 import React, { useMemo, useRef, useState } from "react";
 import { updateEventStatus } from "../services";
 import { TodoStatus, type TodoEvent } from "../types";
+import EditEventDialog from "./EditEventDialog";
 import styles from "./index.module.scss";
 
 interface Props {
@@ -17,6 +19,8 @@ const EventCard: React.FC<Props> = (props) => {
     const { id, event_name, description, scheduled_time, status } = event || {};
     const requestLock = useRef(false);
     const [localStatus, setLocalStatus] = useState<TodoStatus>(status);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [isShowEditDialog, setIsShowEditDialog] = useState(false);
 
     const parsedScheduledTime = useMemo(() => {
         return dayjs(scheduled_time).format("HH:mm");
@@ -42,6 +46,14 @@ const EventCard: React.FC<Props> = (props) => {
         }
     };
 
+    const onEditButtonClick = () => {
+        setIsShowEditDialog(true);
+    };
+
+    const onMenuClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
         <div
             className={classnames(styles.card, {
@@ -49,12 +61,50 @@ const EventCard: React.FC<Props> = (props) => {
             })}
         >
             <div className={styles.top}>
-                <Typography variant="h6" component="div" className={styles.eventName} sx={{ fontSize: "20px" }}>
-                    {event_name}
-                </Typography>
+                <div className={styles.topLine}>
+                    <Typography variant="h6" component="div" className={styles.eventName} sx={{ fontSize: "20px" }}>
+                        {event_name}
+                    </Typography>
+                    <IconButton
+                        size="small"
+                        onClick={(e) => {
+                            setAnchorEl(e.currentTarget);
+                        }}
+                    >
+                        <MoreVertIcon />
+                    </IconButton>
+                </div>
                 <Typography variant="body2" component="div" color="text.secondary" className={styles.description}>
                     {description}
                 </Typography>
+                <Menu
+                    sx={{ paddingTop: "0px", paddingBottom: "0px" }}
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    onClose={onMenuClose}
+                    disableScrollLock={true}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                    }}
+                >
+                    <MenuList dense disablePadding>
+                        <MenuItem onClick={onEditButtonClick}>
+                            <Typography color="primary.main" fontSize={14}>
+                                Edit
+                            </Typography>
+                        </MenuItem>
+                        <MenuItem>
+                            <Typography color="warning.main" fontSize={14}>
+                                Delete
+                            </Typography>
+                        </MenuItem>
+                    </MenuList>
+                </Menu>
             </div>
             <div className={styles.divider}></div>
             <div className={styles.bottom}>
@@ -71,6 +121,15 @@ const EventCard: React.FC<Props> = (props) => {
                     </IconButton>
                 </div>
             </div>
+            <EditEventDialog
+                open={isShowEditDialog}
+                onClose={() => {
+                    setIsShowEditDialog(false);
+                    setAnchorEl(null);
+                }}
+                event={event}
+                key={JSON.stringify(event)}
+            />
         </div>
     );
 };

@@ -3,13 +3,13 @@ import dayjs from "dayjs";
 import type { TodoEvent, TodoStatus } from "./types";
 
 export const getUpcomingEvents = async () => {
-    return await request.get<TodoEvent[]>("/upcoming", {
+    return await request.get<TodoEvent[]>("/event/upcoming", {
         current_time: dayjs().format(),
     });
 };
 
 export const updateEventStatus = async (eventId: number, status: TodoStatus) => {
-    return await request.post("/update_event_status", {
+    return await request.post("/event/update_status", {
         id: eventId,
         status,
     });
@@ -22,7 +22,7 @@ export interface PrepareCreateEventResult {
 }
 
 export const prepareCreateEvent = async (description: string) => {
-    return await request.post<PrepareCreateEventResult>("/prepare_create_event", {
+    return await request.post<PrepareCreateEventResult>("/event/prepare_create", {
         current_time: dayjs().format(),
         description,
     });
@@ -37,7 +37,22 @@ export interface CreateEventPayload {
 
 export const createEvent = async (params: CreateEventPayload) => {
     const { eventName, scheduledTime, remindTime, description } = params;
-    return await request.post<TodoEvent>("/create_event", {
+    return await request.post<TodoEvent>("/event/create", {
+        event_name: eventName,
+        description,
+        scheduled_time: scheduledTime,
+        remind_time: remindTime,
+    });
+};
+
+export interface UpdateEventPayload extends CreateEventPayload {
+    id: number;
+}
+
+export const updateEvent = async (params: UpdateEventPayload) => {
+    const { id, eventName, scheduledTime, remindTime, description } = params;
+    return await request.post<TodoEvent>("/event/update", {
+        id,
         event_name: eventName,
         description,
         scheduled_time: scheduledTime,

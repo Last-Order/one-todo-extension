@@ -3,7 +3,6 @@ import {
     Avatar,
     Box,
     Divider,
-    Icon,
     IconButton,
     LinearProgress,
     ListItemIcon,
