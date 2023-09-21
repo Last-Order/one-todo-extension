@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import React, { useMemo, useRef, useState } from "react";
 import { updateEventStatus } from "../services";
 import { TodoStatus, type TodoEvent } from "../types";
+import DeleteEventConfirmDialog from "./DeleteEventConfirmDialog";
 import EditEventDialog from "./EditEventDialog";
 import styles from "./index.module.scss";
 
@@ -21,6 +22,7 @@ const EventCard: React.FC<Props> = (props) => {
     const [localStatus, setLocalStatus] = useState<TodoStatus>(status);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isShowEditDialog, setIsShowEditDialog] = useState(false);
+    const [isShowDeleteConfirmDialog, setIsShowDeleteConfirmDialog] = useState(false);
 
     const parsedScheduledTime = useMemo(() => {
         return dayjs(scheduled_time).format("HH:mm");
@@ -48,6 +50,10 @@ const EventCard: React.FC<Props> = (props) => {
 
     const onEditButtonClick = () => {
         setIsShowEditDialog(true);
+    };
+
+    const onDeleteButtonClick = () => {
+        setIsShowDeleteConfirmDialog(true);
     };
 
     const onMenuClose = () => {
@@ -98,7 +104,7 @@ const EventCard: React.FC<Props> = (props) => {
                                 Edit
                             </Typography>
                         </MenuItem>
-                        <MenuItem>
+                        <MenuItem onClick={onDeleteButtonClick}>
                             <Typography color="warning.main" fontSize={14}>
                                 Delete
                             </Typography>
@@ -125,6 +131,15 @@ const EventCard: React.FC<Props> = (props) => {
                 open={isShowEditDialog}
                 onClose={() => {
                     setIsShowEditDialog(false);
+                    setAnchorEl(null);
+                }}
+                event={event}
+                key={JSON.stringify(event)}
+            />
+            <DeleteEventConfirmDialog
+                open={isShowDeleteConfirmDialog}
+                onClose={() => {
+                    setIsShowDeleteConfirmDialog(false);
                     setAnchorEl(null);
                 }}
                 event={event}

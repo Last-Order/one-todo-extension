@@ -60,6 +60,17 @@ export const updateEvent = async (params: UpdateEventPayload) => {
     });
 };
 
+export interface DeleteEventPayload {
+    id: number;
+}
+
+export const deleteEvent = async (params: DeleteEventPayload) => {
+    const { id } = params;
+    return await request.post<TodoEvent>("/event/delete", {
+        id,
+    });
+};
+
 export interface UserProfileResponse {
     first_name: string;
     last_name: string;
