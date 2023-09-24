@@ -34,7 +34,8 @@ const EditEventDialog: React.FC<Props> = (props) => {
 
     const requestLock = useRef(false);
 
-    const onConfirm = async () => {
+    const onConfirm = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         if (requestLock.current) {
             return;
         }
@@ -60,10 +61,12 @@ const EditEventDialog: React.FC<Props> = (props) => {
             addMessage("success", "Event information saved.");
             onClose();
         } catch (e) {
+            console.log(e);
             if (e instanceof Error) {
                 addMessage("error", e.message);
             }
         } finally {
+            console.log(111);
             requestLock.current = false;
             setIsLoading(false);
         }

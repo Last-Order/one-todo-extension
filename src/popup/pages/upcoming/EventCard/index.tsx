@@ -68,7 +68,7 @@ const EventCard: React.FC<Props> = (props) => {
     const onMenuClose = () => {
         setAnchorEl(null);
     };
-    console.log(isShowEventDetailDialog);
+
     return (
         <>
             <div
@@ -147,7 +147,7 @@ const EventCard: React.FC<Props> = (props) => {
                     setAnchorEl(null);
                 }}
                 event={event}
-                key={JSON.stringify(event)}
+                key={`${JSON.stringify(event)}-edit`}
             />
             <DeleteEventConfirmDialog
                 open={isShowDeleteConfirmDialog}
@@ -156,12 +156,12 @@ const EventCard: React.FC<Props> = (props) => {
                     setAnchorEl(null);
                 }}
                 event={event}
-                key={JSON.stringify(event)}
+                key={`${JSON.stringify(event)}-delete`}
             />
             <EventDetailDialog
                 open={isShowEventDetailDialog}
                 event={event}
-                key={JSON.stringify(event)}
+                key={`${JSON.stringify(event)}-detail`}
                 onClose={() => {
                     console.log(1);
                     setIsShowEventDetailDialog(false);
