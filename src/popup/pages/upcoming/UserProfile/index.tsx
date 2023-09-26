@@ -19,6 +19,7 @@ import React, { useState } from "react";
 import useSWR from "swr";
 import { getUserProfile } from "../services";
 import styles from "./index.module.scss";
+import SubscriptionManageDialog from "./SubscriptionManageDialog";
 
 const DEFAULT_AVATAR_URL = "https://www.gravatar.com/avatar/00000000000000000000000000000000.jpg?d=mp&f=y";
 
@@ -28,6 +29,7 @@ const UserProfile: React.FC = () => {
     const { quota, used_count: usedCount } = quotaInfo || {};
     const { subscription_name: subscriptionName } = subscription || {};
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+    const [isShowSubscriptionManageDialog, setIsShowSubscriptionManageDialog] = useState(false);
     const navigate = useNavigate();
 
     const ratio = (() => {
@@ -88,7 +90,12 @@ const UserProfile: React.FC = () => {
                             {lastName ? ` ${lastName}` : ""}
                         </div>
                     </MenuItem>
-                    <MenuItem sx={{ height: "48px" }}>
+                    <MenuItem
+                        sx={{ height: "48px" }}
+                        onClick={() => {
+                            setIsShowSubscriptionManageDialog(true);
+                        }}
+                    >
                         <Box sx={{ display: "flex", alignItems: "center", flexDirection: "column", width: "100%" }}>
                             <Box sx={{ width: "100%" }}>
                                 <LinearProgress variant="determinate" value={ratio} />
@@ -118,6 +125,13 @@ const UserProfile: React.FC = () => {
                     </MenuItem>
                 </MenuList>
             </Menu>
+            <SubscriptionManageDialog
+                open={isShowSubscriptionManageDialog}
+                subscription={subscription}
+                onClose={() => {
+                    setIsShowSubscriptionManageDialog(false);
+                }}
+            />
         </div>
     );
 };

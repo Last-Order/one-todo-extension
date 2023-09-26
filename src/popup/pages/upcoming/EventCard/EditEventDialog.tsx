@@ -61,12 +61,10 @@ const EditEventDialog: React.FC<Props> = (props) => {
             addMessage("success", "Event information saved.");
             onClose();
         } catch (e) {
-            console.log(e);
             if (e instanceof Error) {
                 addMessage("error", e.message);
             }
         } finally {
-            console.log(111);
             requestLock.current = false;
             setIsLoading(false);
         }

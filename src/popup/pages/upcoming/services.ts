@@ -1,3 +1,4 @@
+import type { SubscriptionType } from "~popup/constants";
 import request from "~utils/request";
 import dayjs from "dayjs";
 import type { TodoEvent, TodoStatus } from "./types";
@@ -83,7 +84,7 @@ export interface UserProfileResponse {
         start_time: string;
         end_time: string;
         subscription_name: string;
-        subscription_type: number;
+        subscription_type: SubscriptionType;
     };
 }
 

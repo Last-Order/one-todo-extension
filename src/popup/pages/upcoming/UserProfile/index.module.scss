@@ -16,3 +16,35 @@
     flex-grow: 1;
     text-align: left;
 }
+
+.subscriptionList {
+    display: flex;
+    justify-content: space-between;
+}
+
+.subscriptionItem {
+    width: 49%;
+    padding: 8px;
+    border: 1px solid rgba(#aaa, 0.3);
+    border-radius: 4px;
+}
+
+.subscriptionTitle {
+    margin: 4px auto;
+    text-align: center;
+}
+
+.subscriptionFeatureList {
+    list-style: none;
+    padding-inline-start: 4px;
+}
+
+.subscriptionFeatureItem {
+    display: flex;
+    align-items: center;
+}
+
+.subscriptionIcon {
+    margin-right: 4px;
+    flex-shrink: 0;
+}

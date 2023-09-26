@@ -75,8 +75,8 @@ function App() {
                 <GlobalMessage />
                 <Box
                     sx={{
-                        minWidth: "450px",
-                        minHeight: "520px",
+                        minWidth: "550px",
+                        minHeight: "720px",
                     }}
                 >
                     <Outlet />
