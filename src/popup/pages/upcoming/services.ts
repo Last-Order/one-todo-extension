@@ -91,3 +91,11 @@ export interface UserProfileResponse {
 export const getUserProfile = async () => {
     return await request.get<UserProfileResponse>("/user/profile", {});
 };
+
+export interface CreateOrderResponse {
+    checkout_url: string;
+}
+
+export const createOrder = async () => {
+    return await request.post<CreateOrderResponse>("/order/checkout", {});
+};
