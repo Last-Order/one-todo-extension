@@ -35,7 +35,11 @@ const SubscriptionManageDialog: React.FC<Props> = (props) => {
         setIsCreatingOrder(true);
         requestLock.current = true;
         try {
-            const response = await createOrder();
+            const currentUrl = new URL(location.href);
+            const redirect_url = `${currentUrl.origin}${currentUrl.pathname}#/order_callback`;
+            const response = await createOrder({
+                redirect_url,
+            });
             const { checkout_url: checkoutUrl } = response;
             chrome.tabs.create({ url: checkoutUrl });
         } catch (e) {

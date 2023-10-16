@@ -92,10 +92,17 @@ export const getUserProfile = async () => {
     return await request.get<UserProfileResponse>("/user/profile", {});
 };
 
+export interface CreateOrderParams {
+    redirect_url: string;
+}
+
 export interface CreateOrderResponse {
     checkout_url: string;
 }
 
-export const createOrder = async () => {
-    return await request.post<CreateOrderResponse>("/order/checkout", {});
+export const createOrder = async (params: CreateOrderParams) => {
+    const { redirect_url } = params;
+    return await request.post<CreateOrderResponse>("/order/checkout", {
+        redirect_url,
+    });
 };
