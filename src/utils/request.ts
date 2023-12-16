@@ -76,7 +76,7 @@ class Request {
     async parseErrorResponse(e: Response): Promise<RequestError> {
         try {
             const errorBody = await e.json();
-            if (errorBody.code === "need_login") {
+            if (errorBody.code === "need_login" || errorBody.code === "invalid_user") {
                 // 登录失效
                 auth.logout();
                 return;

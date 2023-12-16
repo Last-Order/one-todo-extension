@@ -55,6 +55,11 @@ const Upcoming: React.FC = () => {
                     <CircularProgress />
                 </div>
             )}
+            {!isLoading && !groupedEvents.length && (
+                <div className={styles.emptyTip}>
+                    <Typography>All done! Waiting for new upcoming events...</Typography>
+                </div>
+            )}
             <Stack sx={{ marginTop: "48px" }}>
                 {groupedEvents.map((group, index) => {
                     return (

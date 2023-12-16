@@ -42,6 +42,7 @@ const SubscriptionManageDialog: React.FC<Props> = (props) => {
             });
             const { checkout_url: checkoutUrl } = response;
             chrome.tabs.create({ url: checkoutUrl });
+            onClose();
         } catch (e) {
             if (e instanceof Error) {
                 addMessage("error", e.message);
@@ -50,7 +51,7 @@ const SubscriptionManageDialog: React.FC<Props> = (props) => {
             requestLock.current = false;
             setIsCreatingOrder(false);
         }
-    }, []);
+    }, [onClose]);
 
     return (
         <Dialog open={open} onClose={onDialogClose} maxWidth="sm" fullWidth>

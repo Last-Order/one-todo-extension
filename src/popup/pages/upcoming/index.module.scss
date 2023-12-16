@@ -11,6 +11,14 @@
     align-items: center;
 }
 
+.emptyTip {
+    margin-top: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: rgba(#000, 0.6);
+}
+
 .eventList {
     &:last-child {
         margin-bottom: 60px;

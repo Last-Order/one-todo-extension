@@ -1,11 +1,10 @@
 import { Grid } from "@mui/material";
-
 import btn from "./images/btn_google_signin_dark_normal_web@2x.png";
 import styles from "./index.module.scss";
 
 function Login() {
     const onGoogleLoginClick = () => {
-        const loginUrl = process.env.PLASMO_PUBLIC_GOOGLE_OAUTH_LOGIN_URL;
+        const loginUrl = `${process.env.PLASMO_PUBLIC_API_BASE}/oauth/google/login`;
         const params = new URLSearchParams();
         const currentUrl = new URL(location.href);
         params.append("return_url", `${currentUrl.origin}${currentUrl.pathname}#/login_callback`);
