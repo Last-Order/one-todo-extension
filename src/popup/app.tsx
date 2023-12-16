@@ -8,6 +8,7 @@ import { RecoilRoot } from "recoil";
 import GlobalMessage from "./components/GlobalMessage";
 import Login from "./pages/login";
 import LoginCallback from "./pages/login_callback";
+import OrderCallback from "./pages/order_callback";
 import Upcoming from "./pages/upcoming";
 
 const storage = new Storage({
@@ -30,13 +31,19 @@ const loginCallbackRoute = new Route({
     component: LoginCallback,
 });
 
+const orderCallbackRoute = new Route({
+    getParentRoute: () => rootRoute,
+    path: "/order_callback/$token",
+    component: OrderCallback,
+});
+
 const upcomingRoute = new Route({
     getParentRoute: () => rootRoute,
     path: "/upcoming",
     component: Upcoming,
 });
 
-const routeTree = rootRoute.addChildren([loginRoute, loginCallbackRoute, upcomingRoute]);
+const routeTree = rootRoute.addChildren([loginRoute, loginCallbackRoute, orderCallbackRoute, upcomingRoute]);
 
 const hashHistory = createHashHistory();
 
